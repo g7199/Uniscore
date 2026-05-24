@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+data/raw/*
+!data/raw/README.md
+inputs/*
+!inputs/README.md
+generated/*
+!generated/.gitkeep
+main_table.txt
+main_table_latex.txt
