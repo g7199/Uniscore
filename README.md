@@ -41,11 +41,16 @@ data/raw/samsum/train.csv
 data/raw/samsum/test.csv
 ```
 
-For the SAMSum/RoSE experiment, this layout is also supported:
+For exact SAMSum reproduction, `train.csv` and `test.csv` must contain the same
+fixed 320/80 RoSE-SAMSum row subset used in the submitted table, with these
+columns:
 
 ```text
-data/raw/rose/samsum.test.acus.aggregated.jsonl
+asin,overall,vote,review_text,source,model_name
 ```
+
+The full `samsum.test.acus.aggregated.jsonl` contains more rows and is not
+enough by itself to reconstruct the submitted subset.
 
 For Depression Tweet, the script downloads `ziq/depression_tweet` through
 Hugging Face `datasets` unless `data/raw/depression/depression_tweet.csv` is
@@ -110,5 +115,7 @@ make mapping
 - `make` reuses existing scored CSVs under `inputs/` and regenerates missing
   ones with Qwen3-1.7B.
 - `make score` runs the cache-aware Qwen scoring command for all datasets.
+- SAMSum scoring uses the original `rose.py` prompt text and `max_new_tokens=64`
+  to match the submitted cache-generation path as closely as possible.
 - Software and SAMSum use train-anchored square-root word-count scaling.
 - Depression uses only the four criterion scores and class labels.

@@ -52,32 +52,36 @@ Return JSON only.
 }
 
 P_SAMSUM = {
-    "coherence": """Evaluate the coherence of the given summary using a 1-5 Likert scale assessment.
-Coherence encompasses the logical progression of ideas, semantic connectivity between sentences, and overall structural integrity of the narrative flow within the text.
-1=severely fragmented/disjointed, 2=poorly connected, 3=adequately structured, 4=well-organized, 5=exceptionally cohesive.
-Provide response in JSON format exclusively.
-Summary: {txt}
-{{"score": N}}""",
-    "consistency": """Assess the consistency of the summary against the original source material using a 1-5 Likert scale evaluation.
-Consistency encompasses factual accuracy, semantic fidelity, preservation of original meaning, and absence of contradictory information or misrepresentations relative to the source content.
-1=substantially contradictory, 2=frequently inconsistent, 3=partially aligned, 4=largely faithful, 5=completely accurate.
-Original source: {source}
-Summary: {txt}
-Respond with JSON format only.
-{{"score": N}}""",
-    "fluency": """Determine the fluency of the summary using a 1-5 Likert scale measurement.
-Fluency incorporates syntactic correctness, lexical appropriateness, idiomatic expression, and the naturalness of language patterns that facilitate smooth comprehension.
-1=extensively malformed, 2=grammatically problematic, 3=acceptably readable, 4=linguistically sound, 5=exceptionally polished.
-Provide JSON response exclusively.
-Summary: {txt}
-{{"score": N}}""",
-    "relevance": """Analyze the relevance of the summary in relation to the original source using a 1-5 Likert scale rating.
-Relevance encompasses coverage of salient points, exclusion of extraneous content, proportional emphasis on key themes, and alignment with the source's communicative intent.
-1=completely off-topic, 2=tangentially related, 3=moderately focused, 4=well-targeted, 5=perfectly aligned.
-Original source: {source}
-Summary: {txt}
-Return JSON format only.
-{{"score": N}}""",
+    "coherence": """Evaluate the coherence of the given summary using a 1–5 Likert scale assessment.
+    Coherence encompasses the logical progression of ideas, semantic connectivity between sentences, 
+    and overall structural integrity of the narrative flow within the text.
+    1=severely fragmented/disjointed, 2=poorly connected, 3=adequately structured, 4=well-organized, 5=exceptionally cohesive.
+    Provide response in JSON format exclusively.
+    Summary: {txt}
+    {{"score": N}}""",
+    "consistency": """Assess the consistency of the summary against the original source material using a 1–5 Likert scale evaluation.
+    Consistency encompasses factual accuracy, semantic fidelity, preservation of original meaning, 
+    and absence of contradictory information or misrepresentations relative to the source content.
+    1=substantially contradictory, 2=frequently inconsistent, 3=partially aligned, 4=largely faithful, 5=completely accurate.
+    Original source: {source}
+    Summary: {txt}
+    Respond with JSON format only.
+    {{"score": N}}""",
+    "fluency": """Determine the fluency of the summary using a 1–5 Likert scale measurement.
+    Fluency incorporates syntactic correctness, lexical appropriateness, idiomatic expression, 
+    and the naturalness of language patterns that facilitate smooth comprehension.
+    1=extensively malformed, 2=grammatically problematic, 3=acceptably readable, 4=linguistically sound, 5=exceptionally polished.
+    Provide JSON response exclusively.
+    Summary: {txt}
+    {{"score": N}}""",
+    "relevance": """Analyze the relevance of the summary in relation to the original source using a 1–5 Likert scale rating.
+    Relevance encompasses coverage of salient points, exclusion of extraneous content, 
+    proportional emphasis on key themes, and alignment with the source's communicative intent.
+    1=completely off-topic, 2=tangentially related, 3=moderately focused, 4=well-targeted, 5=perfectly aligned.
+    Original source: {source}
+    Summary: {txt}
+    Return JSON format only.
+    {{"score": N}}""",
 }
 
 P_DEP = {
@@ -123,7 +127,16 @@ def is_complete(path: Path, cols: list[str]) -> bool:
     return all(c in df.columns and df[c].notna().all() for c in cols)
 
 
-def score_rows(df: pd.DataFrame, prompts: dict[str, str], tok, lm, out_path: Path, text_col: str, source_col: str | None = None) -> pd.DataFrame:
+def score_rows(
+    df: pd.DataFrame,
+    prompts: dict[str, str],
+    tok,
+    lm,
+    out_path: Path,
+    text_col: str,
+    source_col: str | None = None,
+    max_new_tokens: int = 16,
+) -> pd.DataFrame:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out = pd.read_csv(out_path) if out_path.exists() else df.copy()
     for col, template in prompts.items():
@@ -137,7 +150,9 @@ def score_rows(df: pd.DataFrame, prompts: dict[str, str], tok, lm, out_path: Pat
                 kwargs["star"] = float(row.get("overall", 3.0)) if pd.notnull(row.get("overall", np.nan)) else 3.0
             if source_col is not None:
                 kwargs["source"] = str(row[source_col])
-            out.iat[idx, out.columns.get_loc(col)] = gen_score(template.format(**kwargs), tok, lm, max_new_tokens=16)
+            out.iat[idx, out.columns.get_loc(col)] = gen_score(
+                template.format(**kwargs), tok, lm, max_new_tokens=max_new_tokens
+            )
             if idx % 100 == 0:
                 out.to_csv(out_path, index=False)
         out.to_csv(out_path, index=False)
@@ -199,9 +214,12 @@ def load_samsum() -> tuple[pd.DataFrame, pd.DataFrame]:
         return pd.read_csv(train_csv), pd.read_csv(test_csv)
     rose_jsonl = ROOT / "data/raw/rose/samsum.test.acus.aggregated.jsonl"
     if rose_jsonl.exists():
-        df = load_rose_jsonl(rose_jsonl)
-        tr, te = train_test_split(df, test_size=0.2, random_state=RANDOM_STATE)
-        return tr.reset_index(drop=True), te.reset_index(drop=True)
+        raise FileNotFoundError(
+            "Found the full RoSE SAMSum jsonl, but the submitted table used a "
+            "fixed 320/80 row subset. Place that subset as "
+            "data/raw/samsum/train.csv and data/raw/samsum/test.csv for exact "
+            "score-cache regeneration."
+        )
     raise FileNotFoundError(f"Missing {train_csv}/{test_csv} or {rose_jsonl}")
 
 
@@ -227,7 +245,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--datasets", default="all", help="all, software, samsum, depression or comma-separated list")
     ap.add_argument("--model", default=MODEL_NAME)
-    ap.add_argument("--device-map", default="auto")
+    ap.add_argument("--device-map", default="cuda:1")
     args = ap.parse_args()
 
     wanted = {"software", "samsum", "depression"} if args.datasets == "all" else set(args.datasets.split(","))
@@ -250,9 +268,9 @@ def main() -> None:
         train_path, test_path = out_dir / "train_results_with_scores.csv", out_dir / "test_results_with_scores.csv"
         train, test = load_samsum()
         if not is_complete(train_path, cols):
-            score_rows(train, P_SAMSUM, tok, lm, train_path, "review_text", "source")
+            score_rows(train, P_SAMSUM, tok, lm, train_path, "review_text", "source", max_new_tokens=64)
         if not is_complete(test_path, cols):
-            score_rows(test, P_SAMSUM, tok, lm, test_path, "review_text", "source")
+            score_rows(test, P_SAMSUM, tok, lm, test_path, "review_text", "source", max_new_tokens=64)
 
     if "depression" in wanted:
         out_dir = ROOT / "inputs/depression"

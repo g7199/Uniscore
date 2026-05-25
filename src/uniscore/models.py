@@ -113,8 +113,7 @@ def setup_model(model_name="Qwen/Qwen3-1.7B", device_map="cuda:1"):
     if tok.pad_token_id is None:
         tok.pad_token = tok.eos_token
 
-    dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
-    load_kwargs = dict(torch_dtype=dtype, device_map=device_map)
+    load_kwargs = dict(torch_dtype="auto", device_map=device_map)
     try:
         lm = AutoModelForCausalLM.from_pretrained(model_name, **load_kwargs)
     except (ValueError, ImportError):
@@ -153,12 +152,10 @@ def _gen_json_score(text, tok, lm, max_new_tokens=64, do_sample=False, temperatu
     gen_kwargs = dict(
         max_new_tokens=max_new_tokens,
         do_sample=do_sample,
-        pad_token_id=tok.pad_token_id,
+        temperature=temperature,
+        top_p=top_p,
         eos_token_id=tok.eos_token_id,
     )
-    if do_sample:
-        gen_kwargs["temperature"] = temperature
-        gen_kwargs["top_p"] = top_p
     with torch.no_grad():
         out = lm.generate(**inputs, **gen_kwargs)
     gen = tok.decode(out[0][inputs.input_ids.shape[1]:], skip_special_tokens=True).strip()
