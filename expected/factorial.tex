@@ -1,0 +1,44 @@
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+on the anchors & $B=10$ & $B=20$ & $B=40$ & $B=100$ \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{pool: rank-ridge (fitted)}} \\
+\uni{} & \textbf{.572} & \textbf{.583} & \textbf{.588} & \textbf{.592} \\
+LDA stack & .549 & .574 & .585 & .588 \\
+logistic stack & .548 & .561 & .573 & .583 \\
+LDA stack, cross-fitted & .545 & .567 & .579 & .584 \\
+logistic stack, cross-fitted & .544 & .556 & .569 & .580 \\
+naive Bayes stack & .546 & .559 & .564 & .567 \\
+PLS-1 stack & .546 & .559 & .564 & .567 \\
+ridge stack & .518 & .554 & .574 & .581 \\
+mean judge criterion + pool score & .551 & .567 & .576 & .574 \\
+LDA stack shrunk to marginal weights & .553 & .570 & .579 & .585 \\
+holistic + pool score & .538 & .550 & .557 & .556 \\
+\addlinespace[2pt]
+\multicolumn{5}{@{}l}{\emph{pool: AHP of Somers' $D$}} \\
+AHP priorities & .550 & .561 & .567 & .569 \\
+LDA stack & .524 & .550 & .563 & .565 \\
+logistic stack & .536 & .547 & .558 & .562 \\
+LDA stack, cross-fitted & .521 & .549 & .562 & .564 \\
+logistic stack, cross-fitted & .533 & .546 & .558 & .561 \\
+naive Bayes stack & .536 & .551 & .557 & .558 \\
+holistic + pool score & .501 & .519 & .525 & .525 \\
+\addlinespace[2pt]
+\multicolumn{5}{@{}l}{\emph{no pool labels: all criteria}} \\
+AHP priorities & .445 & .493 & .520 & .511 \\
+LDA & .431 & .489 & .524 & .524 \\
+naive Bayes & .432 & .480 & .512 & .515 \\
+logistic & .428 & .477 & .509 & .521 \\
+\addlinespace[2pt]
+\multicolumn{5}{@{}l}{\emph{no pool labels: judge criteria}} \\
+AHP priorities & .512 & .523 & .527 & .527 \\
+LDA & .493 & .517 & .529 & .529 \\
+logistic & .500 & .511 & .524 & .527 \\
+equal weights & .503 & .509 & .511 & .507 \\
+\addlinespace[2pt]
+\multicolumn{5}{@{}l}{\emph{without anchors}} \\
+holistic prompt & \multicolumn{4}{c}{.466} \\
+pool score, rank-ridge & \multicolumn{4}{c}{.468} \\
+pool score, AHP priorities & \multicolumn{4}{c}{.413} \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,177 @@
+{
+ "summeval": {
+  "text_label": "Summary",
+  "context_label": "Source article",
+  "criteria": [
+   {
+    "key": "coherence",
+    "question": "Evaluate the coherence of the summary: logical progression of ideas, semantic connectivity between sentences, and overall structure of the text.\n1=severely fragmented, 2=poorly connected, 3=adequately structured, 4=well-organized, 5=exceptionally cohesive.",
+    "shows_context": false
+   },
+   {
+    "key": "consistency",
+    "question": "Assess the factual consistency of the summary against the source article: factual accuracy, preservation of the original meaning, and absence of contradictions or invented content.\n1=substantially contradictory, 2=frequently inconsistent, 3=partially aligned, 4=largely faithful, 5=completely accurate.",
+    "shows_context": true
+   },
+   {
+    "key": "fluency",
+    "question": "Determine the fluency of the summary: syntactic correctness, appropriate word choice, and naturalness of the language.\n1=extensively malformed, 2=grammatically problematic, 3=acceptably readable, 4=linguistically sound, 5=exceptionally polished.",
+    "shows_context": false
+   },
+   {
+    "key": "relevance",
+    "question": "Analyze the relevance of the summary with respect to the source article: coverage of the salient points, exclusion of extraneous content, and proportional emphasis on key themes.\n1=completely off-topic, 2=tangentially related, 3=moderately focused, 4=well-targeted, 5=perfectly aligned.",
+    "shows_context": true
+   }
+  ],
+  "holistic": {
+   "key": "overall",
+   "question": "Rate the overall quality of the summary as a summary of the source article (faithful, relevant, coherent, well written).\n1=very poor, 2=poor, 3=fair, 4=good, 5=excellent.",
+   "shows_context": true
+  }
+ },
+ "helpsteer2": {
+  "text_label": "Response",
+  "context_label": "User prompt",
+  "criteria": [
+   {
+    "key": "correctness",
+    "question": "Rate the factual correctness of the response: it includes all pertinent facts, has no errors and no hallucinations.\n1=mostly wrong or fabricated, 2=several errors, 3=partly correct, 4=mostly correct, 5=fully correct and complete.",
+    "shows_context": true
+   },
+   {
+    "key": "coherence",
+    "question": "Rate the coherence of the response: consistency and clarity of expression, logical flow, no contradictions.\n1=incoherent, 2=hard to follow, 3=understandable, 4=clear, 5=exceptionally clear and consistent.",
+    "shows_context": false
+   },
+   {
+    "key": "complexity",
+    "question": "Rate the intellectual complexity of the response: how much domain expertise would be needed to write it.\n1=trivial, anyone could write it, 2=basic, 3=intermediate, 4=advanced, 5=requires deep expert knowledge.",
+    "shows_context": true
+   },
+   {
+    "key": "verbosity",
+    "question": "Rate the verbosity of the response relative to what the prompt asks for (amount of detail).\n1=extremely terse, 2=brief, 3=appropriate, 4=detailed, 5=very long-winded with a lot of extra detail.",
+    "shows_context": true
+   },
+   {
+    "key": "relevance",
+    "question": "Rate how well the response addresses the user's request and follows the instructions in the prompt.\n1=ignores the request, 2=barely addresses it, 3=partially addresses it, 4=addresses it well, 5=fully and precisely addresses it.",
+    "shows_context": true
+   }
+  ],
+  "holistic": {
+   "key": "overall",
+   "question": "Rate how helpful the response is to the user who wrote the prompt.\n1=not helpful at all, 2=slightly helpful, 3=moderately helpful, 4=helpful, 5=extremely helpful.",
+   "shows_context": true
+  }
+ },
+ "asap_aes": {
+  "text_label": "Essay",
+  "context_label": "Writing prompt",
+  "criteria": [
+   {
+    "key": "content",
+    "question": "Rate the content of the essay: quality and relevance of ideas, use of supporting evidence, and how well it addresses the writing prompt.\n1=off-topic/no ideas, 2=weak ideas, 3=adequate, 4=strong, 5=insightful and fully developed.",
+    "shows_context": true
+   },
+   {
+    "key": "organization",
+    "question": "Rate the organization of the essay: clear structure, logical paragraphing, effective introduction and conclusion, smooth transitions.\n1=no structure, 2=weak, 3=adequate, 4=well-organized, 5=excellently organized.",
+    "shows_context": false
+   },
+   {
+    "key": "style",
+    "question": "Rate the writing style and voice: sentence variety, tone appropriate to the purpose, engaging expression.\n1=very poor, 2=weak, 3=adequate, 4=effective, 5=distinctive and compelling.",
+    "shows_context": false
+   },
+   {
+    "key": "fluency",
+    "question": "Rate the language conventions: grammar, spelling, punctuation and readability.\n1=pervasive errors, 2=many errors, 3=some errors, 4=few errors, 5=virtually error-free.",
+    "shows_context": false
+   },
+   {
+    "key": "vocabulary",
+    "question": "Rate the vocabulary: range, precision and appropriateness of word choice.\n1=very limited, 2=limited, 3=adequate, 4=varied and precise, 5=rich and sophisticated.",
+    "shows_context": false
+   }
+  ],
+  "holistic": {
+   "key": "overall",
+   "question": "Rate the overall writing quality of the essay, as a teacher would when grading it.\n1=very poor, 2=poor, 3=fair, 4=good, 5=excellent.",
+   "shows_context": true
+  }
+ },
+ "dreaddit": {
+  "text_label": "Post",
+  "context_label": null,
+  "criteria": [
+   {
+    "key": "stressor",
+    "question": "Rate how clearly the post describes a specific source of stress in the author's life (e.g., money, work, relationships, health, housing).\n1=none mentioned, 2=vague hint, 3=some stressor, 4=clear stressor, 5=very clear and central stressor.",
+    "shows_context": false
+   },
+   {
+    "key": "negative_emotion",
+    "question": "Rate the intensity of negative emotions expressed by the author (anxiety, fear, sadness, anger, overwhelm).\n1=none, 2=mild, 3=moderate, 4=strong, 5=extreme.",
+    "shows_context": false
+   },
+   {
+    "key": "coping_difficulty",
+    "question": "Rate how much the author struggles to cope or feels unable to handle the situation.\n1=coping well, 2=mostly coping, 3=mixed, 4=struggling, 5=unable to cope.",
+    "shows_context": false
+   },
+   {
+    "key": "future_worry",
+    "question": "Rate how much the author worries about what may happen next or feels trapped without a way out.\n1=no worry, 2=slight, 3=moderate, 4=strong, 5=overwhelming dread or hopelessness.",
+    "shows_context": false
+   },
+   {
+    "key": "help_seeking",
+    "question": "Rate how strongly the post seeks support, advice or relief from others.\n1=none, 2=slight, 3=moderate, 4=clear request, 5=urgent plea for help.",
+    "shows_context": false
+   }
+  ],
+  "holistic": {
+   "key": "overall",
+   "question": "Rate how strongly this post indicates that its author is experiencing psychological stress.\n1=no indication, 2=slight indication, 3=some indication, 4=clear indication, 5=very strong indication.",
+   "shows_context": false
+  }
+ },
+ "civil_comments": {
+  "text_label": "Comment",
+  "context_label": null,
+  "criteria": [
+   {
+    "key": "insult",
+    "question": "Rate how insulting, disrespectful or demeaning the comment is toward a person or group.\n1=not at all, 2=slightly, 3=moderately, 4=clearly, 5=extremely.",
+    "shows_context": false
+   },
+   {
+    "key": "threat",
+    "question": "Rate how much the comment contains threats or wishes of harm toward someone.\n1=none, 2=faint hint, 3=some, 4=clear, 5=explicit and serious.",
+    "shows_context": false
+   },
+   {
+    "key": "profanity",
+    "question": "Rate the amount of profanity, vulgarity or obscene language in the comment.\n1=none, 2=a little, 3=some, 4=a lot, 5=pervasive.",
+    "shows_context": false
+   },
+   {
+    "key": "identity_attack",
+    "question": "Rate how much the comment attacks or stereotypes people because of their identity (race, religion, gender, sexuality, disability, nationality).\n1=none, 2=slightly, 3=moderately, 4=clearly, 5=extremely.",
+    "shows_context": false
+   },
+   {
+    "key": "hostility",
+    "question": "Rate the overall hostility and aggression of the tone.\n1=friendly/neutral, 2=slightly sharp, 3=heated, 4=hostile, 5=extremely aggressive.",
+    "shows_context": false
+   }
+  ],
+  "holistic": {
+   "key": "overall",
+   "question": "Rate how toxic this comment is, i.e. likely to make other people leave a discussion.\n1=not toxic, 2=slightly toxic, 3=moderately toxic, 4=toxic, 5=very toxic.",
+   "shows_context": false
+  }
+ }
+}
