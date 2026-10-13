@@ -1,6 +1,6 @@
 # UniScore
 
-Code and data for **"Fit Where Supervision Is Plentiful, Weigh by Tested Evidence Where It Is Scarce: Aggregating LLM-Judge Criteria"**.
+Code and data for **"Uniscore: Aggregating LLM-Judge Criteria with a Labelled Pool and Few Anchors"**.
 
 UniScore turns the criterion scores of an LLM judge into one quality score. Two kinds of supervision of very different
 sizes are available: quality labels and judge-free criteria for a large pool of texts, and judge scores for a few
